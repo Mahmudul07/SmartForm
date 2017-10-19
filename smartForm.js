@@ -1,36 +1,35 @@
 // Your jQuery goes here
 
 var userData = {
-  name: '',
-  email: '',
-  html: [],
-  css: [],
-  js: [],
-  htmlSkill: null,
-  cssSkill: null,
-  jsSkill: null,
-  position: "welcome"
+    name:"",
+    email:"",
+    html: {likes: [], dislikes: []},
+    css: {likes: [], dislikes: []},
+    js: {likes: [], dislikes: []},
+    position: [false, false, false],
+    strengths: {html:"", css:"", js:""},
+    currentQuestion: "#welcome"
 };
-var position = 0;
-var positionArray = [false, false, false];
-//validations
+
   $(document).ready(function() {
     $("#start").click(function(event) {
       $("#q1").show();
       $(this).hide();
       $("#welcome").hide();
     });
+
     function validateName(name)
-      {
+    {
         var re = /^[A-z ]+$/;
         return re.test(name);
-      }
+    }
 
-      function validateEmail(email)
-      {
+    function validateEmail(email)
+    {
         var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         return re.test(email);
-      }
+    }
+
     $('#qNext').click(function(event) {
       var name = $('#name').val();
       var email = $('#exampleInputEmail1').val();
@@ -47,12 +46,14 @@ var positionArray = [false, false, false];
         $("#qNext").prop('disabled');
         return false;
       }
+
       else if(!validateEmail(email) || email.length == 0) {
       alert("Please enter a valid email address.");
         $('#exampleInputEmail1').focus();
         $("#qNext").prop('disabled');
         return false;
       }
+
       else {
           userData.name = $("#name").val();
           userData.email = $("#exampleInputEmail1").val();
@@ -63,10 +64,12 @@ var positionArray = [false, false, false];
         return true;
       }
     });
+
   $("#exampleInputEmail1").on("change keyup", function(){
   console.log($(this).val());
   $("#qNext").prop('disabled', $("#name").val() == '' || $("#exampleInputEmail1").val() == '');
 });
+
   $("#name").on("change", function(){
     console.log($(this).val());
     $("#qNext").prop('disabled', $("#name").val() == '' || $("#exampleInputEmail1").val() == '');
@@ -76,18 +79,18 @@ var positionArray = [false, false, false];
     $("#q2").hide();
     $("#q2a").show();
   });
+
   $("#css").click(function() {
     $("#q2").hide();
     $("#q2b").show();
-
   });
+
   $("#js").click(function() {
     $("#q2").hide();
     $("#q2c").show();
 
   });
 
-  //Here HTML checkbox
   $("#q2a").click(function() {
     $(':checkbox[name=likesHTML]').click(function() {
       if (this.checked) {
@@ -95,7 +98,8 @@ var positionArray = [false, false, false];
         userData.position = " html";
         console.log(JSON.stringify(userData));
       }
-      });
+    });
+
     $("#htmlNext").click(function() {     
       $("#q2a").hide();
       $("#q2").show();
@@ -110,13 +114,14 @@ var positionArray = [false, false, false];
       }
       $("#html").prop('disabled', true);
     });
+
     $("#htmlPrev").click(function() {
       $("#q2a").hide();
       $("#q2").show();
     });
   });
 
-  //Here CSS Checkbox
+
   $("#q2b").click(function() {
     $(':checkbox[name=likesCSS]').click(function() {
       if (this.checked) {
@@ -124,7 +129,8 @@ var positionArray = [false, false, false];
         userData.position = " css";
         console.log(JSON.stringify(userData));
       }
-      });
+    });
+
     $("#cssNext").click(function() {      
       
       $("#q2b").hide();
@@ -140,12 +146,13 @@ var positionArray = [false, false, false];
       }
       $("#css").prop('disabled', true);
     });
+
     $("#cssPrev").click(function() {
       $("#q2b").hide();
       $("#q2").show();
     });
   });
-  //Here JS Checkbox
+
   $("#q2c").click(function() {
     $(':checkbox[name=likesJS]').click(function() {
       if (this.checked) {
@@ -153,7 +160,8 @@ var positionArray = [false, false, false];
         userData.position = " js";
         console.log(JSON.stringify(userData));  
       }
-      });
+  });
+
     $("#jsNext").click(function() {
       $("#q2c").hide();
       $("#q2").show();
@@ -168,11 +176,13 @@ var positionArray = [false, false, false];
       }
       $("#js").prop('disabled', true);
     });
+
     $("#jsPrev").click(function() {
       $("#q2c").hide();
       $("#q2").show();
     });
   });
+
   $("#q3").ready(function(){
     var i = 0;
     var str = [false , false, false];
@@ -187,6 +197,7 @@ var positionArray = [false, false, false];
         $("#q3Next").prop('disabled', false);
       }
     });
+
     $(':radio[name=cssR]').click(function(){
       userData.cssSkill = this.value;
       console.log(JSON.stringify(userData));
@@ -196,6 +207,7 @@ var positionArray = [false, false, false];
         $("#q3Next").prop('disabled', false);
       }
     });
+
     $(':radio[name=jsR]').click(function(){
       userData.jsSkill = this.value;
       console.log(JSON.stringify(userData));
@@ -205,21 +217,23 @@ var positionArray = [false, false, false];
         $("#q3Next").prop('disabled', false);
       }
     });
+
     $("#q3Next").click(function(){
       $("#q3").hide();
       $("#thanks").show();
     });
+
     $("#q3Prev").click(function(){
       $("#q3").hide();
       $("#q2").show();
     });
   });
+
   $("#thanks").ready(function(){
     if (!localStorage.userData){
       localStorage.userData = JSON.stringify([]);
     }
     var userD = JSON.parse(localStorage["userData"]);
-    //userD.push(userData);
     localStorage["userData"] = JSON.stringify(userData);
     $("#ans").click(function(){
       $("#show").show();
